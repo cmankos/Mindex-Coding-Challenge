@@ -44,6 +44,7 @@ public class EmployeeController {
 
     @GetMapping("/reportingStructure/{employeeId}")
     public ReportingStructure getReportingStructure(@PathVariable String employeeId) {
+        LOG.debug("Finding reporting structure for employeeId [{}]", employeeId);
 
         return reportingStructureService.findReportingStructure(employeeId);
     }
