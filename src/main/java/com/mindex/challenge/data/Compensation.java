@@ -1,7 +1,5 @@
 package com.mindex.challenge.data;
 
-import org.springframework.data.mongodb.core.mapping.Field;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
