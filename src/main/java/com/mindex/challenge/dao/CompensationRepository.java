@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CompensationRepository extends MongoRepository<Compensation, String> {
+    Compensation readByEmployeeEmployeeId(String employeeId); // Haven't played with mongodb -> will I need to define? Wrap or something?
 }

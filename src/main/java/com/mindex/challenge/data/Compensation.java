@@ -1,5 +1,7 @@
 package com.mindex.challenge.data;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -8,6 +10,14 @@ public class Compensation {
     private Employee employee;
     private BigDecimal salary;
     private Date effectiveDate;
+
+    public Compensation() {}
+
+    public Compensation(Employee employee, BigDecimal salary, Date effectiveDate){
+        this.employee = employee;
+        this.salary = salary;
+        this.effectiveDate = effectiveDate;
+    }
 
     public Employee getEmployee() {
         return employee;

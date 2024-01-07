@@ -1,44 +1,40 @@
 package com.mindex.challenge.service.impl;
 
 import com.mindex.challenge.dao.CompensationRepository;
-import com.mindex.challenge.dao.EmployeeRepository;
-import com.mindex.challenge.data.Employee;
+import com.mindex.challenge.data.Compensation;
 import com.mindex.challenge.service.CompensationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class CompensationServiceImpl implements CompensationService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EmployeeServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CompensationServiceImpl.class);
 
     @Autowired
     private CompensationRepository compensationRepository;
 
     @Override
-    public Employee create(Employee employee) {
-        LOG.debug("Creating employee [{}]", employee);
+    public Compensation create(Compensation compensation) {
+        LOG.debug("Creating compensation [{}]", compensation);
 
-        employee.setEmployeeId(UUID.randomUUID().toString());
-        employeeRepository.insert(employee);
+        compensationRepository.insert(compensation);
 
-        return employee;
+        return compensation;
     }
 
     @Override
-    public Employee read(String id) {
-        LOG.debug("Creating employee with id [{}]", id);
+    public Compensation readByEmployeeId(String employeeId) {
+        LOG.debug("Finding compensation for employee with id [{}]", employeeId);
 
-        Employee employee = employeeRepository.findByEmployeeId(id);
+        Compensation compensation = compensationRepository.readByEmployeeEmployeeId(employeeId);
 
-        if (employee == null) {
-            throw new RuntimeException("Invalid employeeId: " + id);
+        if (compensation == null) {
+            throw new RuntimeException("Invalid employeeId: " + employeeId);
         }
 
-        return employee;
+        return compensation;
     }
 }
