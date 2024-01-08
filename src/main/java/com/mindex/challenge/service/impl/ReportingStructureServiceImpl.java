@@ -19,9 +19,11 @@ import java.util.Set;
 public class ReportingStructureServiceImpl implements ReportingStructureService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportingStructureServiceImpl.class);
-
-    @Autowired
     private EmployeeRepository employeeRepository;
+
+    public ReportingStructureServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     public ReportingStructure findReportingStructure (String employeeId) {
         return new ReportingStructure(employeeRepository.findByEmployeeId(employeeId), findNumberOfReports(employeeId));
