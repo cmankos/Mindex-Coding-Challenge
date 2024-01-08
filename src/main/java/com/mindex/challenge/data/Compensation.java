@@ -1,17 +1,17 @@
 package com.mindex.challenge.data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Compensation {
 
     private Employee employee;
     private BigDecimal salary;
-    private Date effectiveDate;
+    private LocalDate effectiveDate;
 
     public Compensation() {}
 
-    public Compensation(Employee employee, BigDecimal salary, Date effectiveDate){
+    public Compensation(Employee employee, BigDecimal salary, LocalDate effectiveDate){
         this.employee = employee;
         this.salary = salary;
         this.effectiveDate = effectiveDate;
@@ -33,11 +33,11 @@ public class Compensation {
         this.salary = salary;
     }
 
-    public Date getEffectiveDate() {
+    public LocalDate getEffectiveDate() {
         return effectiveDate;
     }
 
-    public void setEffectiveDate(Date effectiveDate) {
+    public void setEffectiveDate(LocalDate effectiveDate) {
         this.effectiveDate = effectiveDate;
     }
 }
