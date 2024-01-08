@@ -5,7 +5,7 @@ import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.service.ReportingStructureService;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -51,6 +51,27 @@ public class ReportingStructureServiceImplTest {
         assert(reportingStructureService.findReportingStructure(employeeC.getEmployeeId()).getNumberOfReports() == 0);
         assert(reportingStructureService.findReportingStructure(employeeD.getEmployeeId()).getNumberOfReports() == 0);
 
+    }
+
+    @Test
+    public void whenEmployeeMissingInDBThenSkippedForCountingTest(){
+
+        Employee employeeA = new Employee();
+        Employee employeeB = new Employee();
+        Employee employeeC = new Employee();
+
+        employeeA.setEmployeeId("employeeA");
+        employeeB.setEmployeeId("employeeB");
+        employeeC.setEmployeeId("employeeC");
+        employeeA.setDirectReports(new ArrayList() {{add(employeeB); add(employeeC);}});
+        employeeB.setDirectReports(new ArrayList() {{add(employeeC);}});
+
+        when(employeeRepository.findByEmployeeId("employeeA")).thenReturn(employeeA);
+        when(employeeRepository.findByEmployeeId("employeeB")).thenReturn(employeeB);
+        when(employeeRepository.findByEmployeeId("employeeC")).thenReturn(null);
+
+        assert(reportingStructureService.findReportingStructure(employeeA.getEmployeeId()).getNumberOfReports() == 1);
+        assert(reportingStructureService.findReportingStructure(employeeB.getEmployeeId()).getNumberOfReports() == 0);
     }
 
     @Test

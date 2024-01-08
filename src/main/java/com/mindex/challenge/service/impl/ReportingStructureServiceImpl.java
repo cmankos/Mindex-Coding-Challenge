@@ -6,7 +6,6 @@ import com.mindex.challenge.data.ReportingStructure;
 import com.mindex.challenge.service.ReportingStructureService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -38,24 +37,21 @@ public class ReportingStructureServiceImpl implements ReportingStructureService 
         List<Employee> reportingToEmployeeIdList = new ArrayList<>();
         Employee parentEmployee = employeeRepository.findByEmployeeId(employeeId);
         if (parentEmployee.getDirectReports() != null) {
-            reportingToEmployeeIdList.addAll(employeeRepository.findByEmployeeId(employeeId).getDirectReports());
+            reportingToEmployeeIdList.addAll(parentEmployee.getDirectReports());
         }
 
         while (!reportingToEmployeeIdList.isEmpty()) {
 
-            Employee potentialReportToEmployeeId = reportingToEmployeeIdList.remove(0);
+            Employee potentialReportToEmployee = reportingToEmployeeIdList.remove(0);
             boolean isEmployeeInDatabase =
-                    !StringUtils.isEmpty(employeeRepository.findByEmployeeId(potentialReportToEmployeeId.getEmployeeId()));
+                    employeeRepository.findByEmployeeId(potentialReportToEmployee.getEmployeeId()) != null;
             boolean isEmployeeAlreadyConsidered =
-                    reportingToEmployeeIdSet.contains(potentialReportToEmployeeId.getEmployeeId());
-
-            if (!isEmployeeInDatabase) {
-                LOG.debug("Employee ID [{}] has not been found - ", potentialReportToEmployeeId.getEmployeeId());
-            }
+                    reportingToEmployeeIdSet.contains(potentialReportToEmployee.getEmployeeId());
 
             if (isEmployeeInDatabase && !isEmployeeAlreadyConsidered) {
-                reportingToEmployeeIdSet.add(potentialReportToEmployeeId.getEmployeeId());
-                List<Employee> potentialReports = employeeRepository.findByEmployeeId(potentialReportToEmployeeId.getEmployeeId()).getDirectReports();
+                reportingToEmployeeIdSet.add(potentialReportToEmployee.getEmployeeId());
+                // Because the directReports doesn't seem to have all the employee information, we're hitting the db
+                List<Employee> potentialReports = employeeRepository.findByEmployeeId(potentialReportToEmployee.getEmployeeId()).getDirectReports();
                 if(potentialReports != null) {
                     reportingToEmployeeIdList.addAll(potentialReports);
                 }
